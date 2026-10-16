@@ -1,0 +1,47 @@
+/*
+ * Design tokens — the ONLY place colours, radii and sizes are defined.
+ * Components use the Tailwind names mapped in globals.css (bg-primary, text-muted, rounded-card…).
+ * To restyle the app, change values here. See docs/DESIGN.md.
+ */
+:root {
+  /* Brand */
+  --primary: #0c2e6b; /* navy — text, primary buttons, headings */
+  --primary-hover: #0a2557;
+  --on-primary: #ffffff;
+  --accent: #20a5a0; /* teal — progress, focus ring, selected border; not for body text */
+  --accent-soft: #e6f6f5; /* selected option bg, info chips */
+  --accent-ink: #0e5e5a; /* text on accent-soft */
+
+  /* Surfaces & lines */
+  --bg: #f6f8fb;
+  --surface: #ffffff;
+  --border: #e8ecf2;
+  --input-border: #d5dbe5;
+  --chip: #eef1f7;
+
+  /* Text */
+  --muted: #4a5a78;
+  --subtle: #6b7891;
+
+  /* Status */
+  --success: #1f6b3a;
+  --success-soft: #e8f5ec;
+  --warning: #6b4a00;
+  --warning-soft: #fff4d6;
+  --danger: #8c1d18;
+  --danger-soft: #fdecea;
+  --danger-text: #b3261e;
+
+  /* Shape */
+  --radius-chip: 8px;
+  --radius-control: 10px;
+  --radius-card: 12px;
+
+  /* Touch targets */
+  --touch-min: 44px;
+  --button-height: 50px;
+  --input-height: 48px;
+
+  /* Exam watermark (tune 0.03–0.2) */
+  --watermark-opacity: 0.07;
+}
