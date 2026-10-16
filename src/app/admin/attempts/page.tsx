@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/auth";
 import Link from "next/link";
 import { integrityTone, listAttempts } from "@/lib/admin/attempts";
 import { fmtDateTime, fmtDuration, fmtScore } from "@/lib/format";
@@ -10,6 +11,7 @@ const RESULT = {
 } as const;
 
 export default async function AttemptsPage() {
+  await requireAdmin();
   const rows = await listAttempts();
   return (
     <>

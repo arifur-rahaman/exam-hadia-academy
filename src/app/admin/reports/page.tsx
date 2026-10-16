@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/auth";
 import { fmtDateTime } from "@/lib/format";
 import { adminDb } from "@/lib/supabase/admin";
 import { Chip, Table } from "../ui";
@@ -14,6 +15,7 @@ type ReportRow = {
 };
 
 export default async function ReportsPage() {
+  await requireAdmin();
   const { data } = await adminDb()
     .from("question_reports")
     .select("id, question_id, message, status, created_at, student:profiles(full_name, student_code), question:questions(question, cblm_no)")

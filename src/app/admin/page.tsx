@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/auth";
 import { getAssessment } from "@/lib/exam/engine";
 import { fmtDateTime } from "@/lib/format";
 import { displayMobile } from "@/lib/mobile";
@@ -7,6 +8,7 @@ import { AddStudentForm, CsvUploadForm, StudentRowActions } from "./StudentForms
 import { Card, Chip, Table } from "./ui";
 
 export default async function StudentsPage({ searchParams }: PageProps<"/admin">) {
+  await requireAdmin();
   const { q } = await searchParams;
   const search = typeof q === "string" ? q.trim() : "";
   const db = adminDb();
@@ -14,8 +16,8 @@ export default async function StudentsPage({ searchParams }: PageProps<"/admin">
 
   let query = db.from("profiles").select("*").eq("role", "student").order("created_at", { ascending: false }).limit(500);
   if (search) {
-    const s = search.replace(/[%,()]/g, "");
-    query = query.or(`full_name.ilike.%${s}%,mobile.ilike.%${s}%,student_code.ilike.%${s}%`);
+    const s = search.replace(/[%*,().]/g, "");
+    query = query.or(`full_name.ilike.*${s}*,mobile.ilike.*${s}*,student_code.ilike.*${s}*`);
   }
   const [{ data: students }, { data: attempts }, { data: settings }] = await Promise.all([
     query,

@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/auth";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReviewCard } from "@/components/ReviewCard";
@@ -11,6 +12,7 @@ import { Card, Chip } from "../../ui";
 const MARK = { full: "পুরো মিলেছে", partial: "আংশিক", none: "মেলেনি" } as const;
 
 export default async function AttemptDetailPage({ params }: PageProps<"/admin/attempts/[attemptId]">) {
+  await requireAdmin();
   const { attemptId } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(attemptId)) notFound();
   const db = adminDb();

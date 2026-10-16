@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/auth";
 import Link from "next/link";
 import { CBLM_NAMES } from "@/lib/cblm";
 import { adminDb } from "@/lib/supabase/admin";
@@ -8,6 +9,7 @@ import { ReimportForm } from "./ReimportForm";
 const PAGE = 50;
 
 export default async function QuestionsPage({ searchParams }: PageProps<"/admin/questions">) {
+  await requireAdmin();
   const sp = await searchParams;
   const type = typeof sp.type === "string" ? sp.type : "";
   const cblm = typeof sp.cblm === "string" ? sp.cblm : "";
