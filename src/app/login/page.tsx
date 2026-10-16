@@ -1,10 +1,20 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { LogoMark } from "@/components/Logo";
+import { getProfile, isAdmin } from "@/lib/auth";
+import { LoginForm } from "./LoginForm";
 
 export const metadata: Metadata = { title: "Login · Hadia Academy" };
 
-// Step 1: layout only. Sign-in with mobile + password is wired up in Step 4.
-export default function LoginPage() {
+const NOTICES: Record<string, string> = {
+  disabled: "এই Account বন্ধ আছে। Hadia Academy-র সাথে যোগাযোগ করুন।",
+};
+
+export default async function LoginPage({ searchParams }: PageProps<"/login">) {
+  const profile = await getProfile();
+  if (profile?.status === "active") redirect(isAdmin(profile) ? "/admin" : "/dashboard");
+  const { reason } = await searchParams;
+
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-[440px] flex-col bg-surface px-7 pt-18 pb-8">
       <div className="flex flex-col items-center gap-3.5">
@@ -15,39 +25,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <form className="mt-12 flex flex-col gap-4">
-        <label className="flex flex-col gap-1.5 text-sm font-semibold">
-          মোবাইল নম্বর
-          <input
-            name="mobile"
-            type="tel"
-            inputMode="numeric"
-            autoComplete="tel"
-            placeholder="01XXXXXXXXX"
-            maxLength={14}
-            className="h-input rounded-control border border-input px-3.5 text-base font-normal placeholder:text-subtle"
-          />
-        </label>
-        <label className="flex flex-col gap-1.5 text-sm font-semibold">
-          Password
-          <input
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            placeholder="••••••••"
-            className="h-input rounded-control border border-input px-3.5 text-base font-normal placeholder:text-subtle"
-          />
-        </label>
-        <button
-          type="submit"
-          className="mt-2 h-button rounded-control bg-primary text-base font-semibold text-on-primary hover:bg-primary-hover"
-        >
-          Login করুন
-        </button>
-        <p className="text-center text-sm text-muted">
-          Password ভুলে গেছেন? Hadia Academy-র সাথে যোগাযোগ করুন।
-        </p>
-      </form>
+      <LoginForm notice={typeof reason === "string" ? NOTICES[reason] : undefined} />
 
       <footer className="mt-auto flex flex-col items-center gap-3 pt-10">
         <div className="w-full border-t border-border" />

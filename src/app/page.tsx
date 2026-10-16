@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
+import { getProfile, isAdmin } from "@/lib/auth";
 
-// Step 4 will send logged-in students to /dashboard instead.
-export default function Home() {
-  redirect("/login");
+export default async function Home() {
+  const p = await getProfile();
+  if (!p) redirect("/login");
+  redirect(isAdmin(p) ? "/admin" : "/dashboard");
 }

@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
+// Cache Components is off: every exam/auth page is per-request (session, server clock).
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
   turbopack: {
     rules: {
       "*.css": {
@@ -11,6 +9,9 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
+  },
+  experimental: {
+    serverActions: { bodySizeLimit: "5mb" }, // admin Excel/CSV uploads
   },
 };
 

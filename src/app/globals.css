@@ -40,6 +40,17 @@ body {
   color: var(--primary);
 }
 
+/* Exam screens: no selecting/copying text (answer box still editable). */
+.exam-locked {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.exam-locked .exam-input {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;

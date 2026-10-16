@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# exam.hadia.academy
 
-## Getting Started
+CBT&A Level 4 online formative assessment (Phase 1). Next.js 16 + Supabase. Plan and rules: `../docs/PLAN.md`, `../CLAUDE.md`.
 
-First, run the development server:
+## First-time setup
+
+1. **Keys** — open `.env.local` and fill in the values (Supabase → Project Settings → API, and Connect → Session pooler URI for `SUPABASE_DB_URL`). Never commit this file.
+2. **Supabase Auth settings** — Authentication → Sign In / Providers: turn **off** "Allow new users to sign up" (only the admin creates accounts).
+3. Install and set up the database:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run db:migrate               # creates tables, RLS, course + FULL_FF assessment
+npm run import:questions -- --apply   # loads the "✅ Final Upload" sheet
+npm run create-admin             # asks for your name, mobile, password
+npm run dev                      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Commands
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | What it does |
+|---|---|
+| `npm run dev` / `npm run build` + `npm start` | run locally / production |
+| `npm test` | exam rules (selection, scoring, mobile, CSV) |
+| `npm run db:check` | runs migrations + RLS checks in an in-memory Postgres |
+| `npm run db:migrate` | applies new files in `supabase/migrations/` to Supabase |
+| `npm run import:questions` | validates the Excel → `scripts/out/import-report.md` (add `-- --apply` to upload) |
+| `npm run cblm:pages` | proposes a CBLM page for each Short → `scripts/out/short-cblm-pages.xlsx` |
+| `npm run cblm:apply -- <file>` | loads pages Arif marked ✅ in that sheet |
+| `npm run create-admin` | creates an admin account |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How it works
 
-## Learn More
+- Login = mobile + password. Each mobile maps to a hidden auth email `8801…@students.hadia.academy`; the real mobile/email live in `profiles`.
+- The browser never gets `questions`. Pages and server actions use the service-role client after checking the signed-in user (`src/lib/auth.ts`). RLS is on for every table.
+- Exam engine: `src/lib/exam/engine.ts` (DB) + `src/lib/exam/logic.ts` (pure rules). Server stores `deadline_at`; late answers are rejected; overdue attempts auto-submit on the next request.
+- Colours/sizes only in `src/styles/tokens.css`.
 
-To learn more about Next.js, take a look at the following resources:
+## Hosting (later)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Hostinger Node.js Web App from GitHub: build `npm run build`, start `npm start`, Node 20+. Add the same env vars (not `SUPABASE_DB_URL`) in hPanel.
