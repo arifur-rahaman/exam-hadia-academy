@@ -38,4 +38,4 @@ npm run dev                      # http://localhost:3000
 
 ## Hosting (later)
 
-Hostinger Node.js Web App from GitHub: build `npm run build`, start `npm start`, Node 20+. Add the same env vars (not `SUPABASE_DB_URL`) in hPanel.
+Domain: `exam.techhunt.org`. Hostinger Node.js Web App from GitHub: build `npm run build`, start `npm start`, Node 20+. Add the same env vars (not `SUPABASE_DB_URL`) in hPanel.
