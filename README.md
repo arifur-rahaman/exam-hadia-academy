@@ -28,6 +28,7 @@ npm run dev                      # http://localhost:3000
 | `npm run cblm:pages` | proposes a CBLM page for each Short → `scripts/out/short-cblm-pages.xlsx` |
 | `npm run cblm:apply -- <file>` | loads pages Arif marked ✅ in that sheet |
 | `npm run create-admin` | creates an admin account |
+| `npm run set-password` | sets a new password for any account by mobile (e.g. forgotten admin password) |
 
 ## How it works
 

@@ -14,7 +14,8 @@
     "create-admin": "tsx scripts/create-admin.ts",
     "cblm:pages": "tsx scripts/cblm-pages.ts",
     "test": "tsx --test tests/*.test.ts",
-    "cblm:apply": "tsx scripts/apply-cblm-pages.ts"
+    "cblm:apply": "tsx scripts/apply-cblm-pages.ts",
+    "set-password": "tsx scripts/set-password.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
